@@ -9,13 +9,50 @@ First Stage
         - data
         - presentation
     
-    - domain 
-        - make card entity
-        - make card repository
-        - make card usecae 
-            - add/ get/ get all/ update/ delete 
-            - do manual injection 
-                no injectable, injectable generator or build runner
-                 
+  ### Domain
+
+    - create FlashCardEntity
+    - create FlashCardRepository
+    - create FlashCardUseCases
+        - add
+        - get
+        - get all
+        - update
+        - delete
+    - do manual dependency injection
+        - register FlashCard UseCases
+        - no injectable
+        - no injectable_generator
+
+
+
+### Data
+
+    - add packages
+        - hive
+        - hive_flutter
+        - hive_generator
+        - build_runner
+
+    - create FlashCardModel
+    - generate Hive adapter
+
+    - create FlashCardDataSource
+    - create FlashCardDataSourceImpl
+
+    - implement Hive CRUD operations
+        - add
+        - get
+        - get all
+        - update
+        - delete
+
+    - create FlashCardRepositoryImpl
+    - convert between Entity and Model
+
+    - do manual dependency injection
+        - register Hive Box
+        - register FlashCardDataSource
+        - register FlashCardRepository
             
 
