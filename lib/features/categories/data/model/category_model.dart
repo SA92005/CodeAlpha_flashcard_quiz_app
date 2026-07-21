@@ -11,7 +11,7 @@ class CategoryModel extends HiveObject {
   @HiveField(1)
   final String name;
   @HiveField(2)
-  final IconData iconData;
+  final int iconData;
 
   CategoryModel({required this.id, required this.name, required this.iconData});
 
@@ -19,11 +19,11 @@ class CategoryModel extends HiveObject {
     return CategoryModel(
       id: entity.id,
       name: entity.name,
-      iconData: entity.icon,
+      iconData: entity.iconCodePoint,
     );
   }
 
   CategoryEntity toEntity() {
-    return CategoryEntity(id: id, name: name, icon: iconData);
+    return CategoryEntity(id: id, name: name, iconCodePoint: iconData);
   }
 }

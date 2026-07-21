@@ -1,10 +1,13 @@
 import 'package:flashcard_quiz_app/features/categories/data/datasource/category_dataSource_impl.dart';
 import 'package:flashcard_quiz_app/features/categories/data/datasource/category_datasource.dart';
 import 'package:flashcard_quiz_app/features/categories/data/model/category_model.dart';
+import 'package:flashcard_quiz_app/features/categories/data/reposatory/category_repo_impl.dart';
+import 'package:flashcard_quiz_app/features/categories/domin/repository/categroy_repository.dart';
 import 'package:flashcard_quiz_app/features/categories/domin/usecase/add_category_usecase.dart';
 import 'package:flashcard_quiz_app/features/categories/domin/usecase/delete_category_usecase.dart';
 import 'package:flashcard_quiz_app/features/categories/domin/usecase/get_categories_usecase.dart';
 import 'package:flashcard_quiz_app/features/categories/domin/usecase/update_category_usecase.dart';
+import 'package:flashcard_quiz_app/features/categories/presentation/cubit/category_cubit.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/data_source/flash_card_data_source.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/data_source/flash_card_data_source_impl.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/models/flash_card_model.dart';
@@ -71,7 +74,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AddCategoryUseCase(repository: sl()));
   sl.registerLazySingleton(() => DeleteCategoryUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetCategoriesUseCase(repository: sl()));
-  sl.registerLazySingleton(() => GetCategoriesUseCase(repository: sl()));
   sl.registerLazySingleton(() => UpdateCategoryUseCase(repository: sl()));
 
   // =========================
@@ -86,5 +88,24 @@ Future<void> init() async {
   // =========================
   sl.registerLazySingleton<Box<CategoryModel>>(
     () => Hive.box<CategoryModel>('categories'),
+  );
+
+  // =========================
+  // Repository category
+  // =========================
+  sl.registerLazySingleton<CategroyRepository>(
+    () => CategoryRepoImpl(categoryDatasource: sl()),
+  );
+
+  // =========================
+  // cubit category
+  // =========================
+  sl.registerFactory(
+    () => CategoryCubit(
+      addCategoryUseCase: sl(),
+      getCategoriesUseCase: sl(),
+      updateCategoryUseCase: sl(),
+      deleteCategoryUseCase: sl(),
+    ),
   );
 }
