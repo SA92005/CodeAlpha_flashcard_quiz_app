@@ -13,6 +13,7 @@ class FlashCardRepoImpl implements FlashCardRepository {
       id: flashCard.id,
       question: flashCard.question,
       answer: flashCard.answer,
+      category: flashCard.category,
     );
     final result = await dataSource.addFlashCard(model);
     return result.toEntity();
@@ -41,6 +42,7 @@ class FlashCardRepoImpl implements FlashCardRepository {
       id: flashCard.id,
       question: flashCard.question,
       answer: flashCard.answer,
+      category: flashCard.category,
     );
     final result = await dataSource.updateFlashCard(model);
     return result.toEntity();

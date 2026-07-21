@@ -1,11 +1,14 @@
 import 'package:flashcard_quiz_app/features/flash_cards/data/data_source/flash_card_data_source.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/data_source/flash_card_data_source_impl.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/models/flash_card_model.dart';
+import 'package:flashcard_quiz_app/features/flash_cards/data/repository/flash_card_repo_impl.dart';
+import 'package:flashcard_quiz_app/features/flash_cards/domain/repository/flash_card_repository.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/domain/usecases/flash_card_add_usecase.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/domain/usecases/flash_card_delete_usecase.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/domain/usecases/flash_card_get_all_usecase.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/domain/usecases/flash_card_get_usecases.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/domain/usecases/flash_card_update_usecase.dart';
+import 'package:flashcard_quiz_app/features/flash_cards/presentation/cubit/flash_card_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 
@@ -33,5 +36,25 @@ Future<void> init() async {
   // =========================
   sl.registerLazySingleton<FlashCardDataSource>(
     () => FlashCardDataSourceImpl(sl()),
+  );
+
+  // =========================
+  // Repository
+  // =========================
+  sl.registerLazySingleton<FlashCardRepository>(
+    () => FlashCardRepoImpl(dataSource: sl()),
+  );
+
+  // =========================
+  // cubit
+  // =========================
+  sl.registerFactory(
+    () => FlashCardCubit(
+      flashCardAddUsecase: sl(),
+      flashCardDeleteUsecase: sl(),
+      flashCardGetAllUseCase: sl(),
+      // flashCardGetUsecases: sl(),
+      flashCardUpdateUseCase: sl(),
+    ),
   );
 }
