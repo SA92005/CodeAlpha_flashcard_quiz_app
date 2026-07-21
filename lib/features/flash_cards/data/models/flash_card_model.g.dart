@@ -20,19 +20,22 @@ class FlashCardModelAdapter extends TypeAdapter<FlashCardModel> {
       question: fields[1] as String,
       answer: fields[2] as String,
       id: fields[0] as String,
+      category: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, FlashCardModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.question)
       ..writeByte(2)
-      ..write(obj.answer);
+      ..write(obj.answer)
+      ..writeByte(3)
+      ..write(obj.category);
   }
 
   @override
