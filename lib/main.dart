@@ -1,4 +1,5 @@
 import 'package:flashcard_quiz_app/core/di/service_alocator.dart';
+import 'package:flashcard_quiz_app/features/categories/data/model/category_model.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/models/flash_card_model.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/presentation/cubit/flash_card_cubit.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/presentation/screens/test_screen.dart';
@@ -12,10 +13,11 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(FlashCardModelAdapter());
+  Hive.registerAdapter(CategoryModelAdapter());
   // Clear the box for testing purposes
-  await Hive.deleteBoxFromDisk('flash_cards');
+  // await Hive.deleteBoxFromDisk('flash_cards');
   await Hive.openBox<FlashCardModel>('flash_cards');
-
+  await Hive.openBox<CategoryModel>('categories');
   await init();
 
   runApp(const FlashCardApp());
