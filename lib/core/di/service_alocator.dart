@@ -1,3 +1,7 @@
+import 'package:flashcard_quiz_app/features/categories/domin/usecase/add_category_usecase.dart';
+import 'package:flashcard_quiz_app/features/categories/domin/usecase/delete_category_usecase.dart';
+import 'package:flashcard_quiz_app/features/categories/domin/usecase/get_categories_usecase.dart';
+import 'package:flashcard_quiz_app/features/categories/domin/usecase/update_category_usecase.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/data_source/flash_card_data_source.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/data_source/flash_card_data_source_impl.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/models/flash_card_model.dart';
@@ -16,7 +20,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // =========================
-  // Use Cases
+  // Use Cases flash card
   // =========================
   sl.registerLazySingleton(() => FlashCardAddUsecase(repository: sl()));
   sl.registerLazySingleton(() => FlashCardDeleteUsecase(repository: sl()));
@@ -25,28 +29,28 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FlashCardUpdateUseCase(repository: sl()));
 
   // =========================
-  // hive
+  // hive flash card box
   // =========================
   sl.registerLazySingleton<Box<FlashCardModel>>(
     () => Hive.box<FlashCardModel>('flash_cards'),
   );
 
   // =========================
-  // Data Sources
+  // Data Sources flash card
   // =========================
   sl.registerLazySingleton<FlashCardDataSource>(
     () => FlashCardDataSourceImpl(sl()),
   );
 
   // =========================
-  // Repository
+  // Repository flash card
   // =========================
   sl.registerLazySingleton<FlashCardRepository>(
     () => FlashCardRepoImpl(dataSource: sl()),
   );
 
   // =========================
-  // cubit
+  // cubit flash card
   // =========================
   sl.registerFactory(
     () => FlashCardCubit(
@@ -57,4 +61,13 @@ Future<void> init() async {
       flashCardUpdateUseCase: sl(),
     ),
   );
+
+  // =========================
+  // Use Cases category
+  // =========================
+  sl.registerLazySingleton(() => AddCategoryUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteCategoryUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetCategoriesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetCategoriesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => UpdateCategoryUseCase(repository: sl()));
 }
