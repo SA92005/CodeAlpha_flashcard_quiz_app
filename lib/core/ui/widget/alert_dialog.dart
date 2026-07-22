@@ -29,21 +29,23 @@ class CategoryAlert extends StatelessWidget {
       backgroundColor: AppColors.background,
       title: Center(child: Text(header, style: AppTextStyle.diolegHeader)),
 
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FlashCardField(controller: controller, hintText: hintText),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FlashCardField(controller: controller, hintText: hintText),
 
-          if (header == "add card" || header == "update card") ...[
-            const SizedBox(height: 12),
+            if (header == "add card" || header == "update card") ...[
+              const SizedBox(height: 12),
 
-            FlashCardField(
-              controller: secondController!,
-              hintText: secondHintText!,
-              maxLines: 5,
-            ),
+              FlashCardField(
+                controller: secondController!,
+                hintText: secondHintText!,
+                maxLines: 5,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
 
       actions: [
