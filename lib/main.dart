@@ -1,10 +1,9 @@
 import 'package:flashcard_quiz_app/core/di/service_alocator.dart';
 import 'package:flashcard_quiz_app/features/categories/data/model/category_model.dart';
 import 'package:flashcard_quiz_app/features/categories/presentation/cubit/category_cubit.dart';
-import 'package:flashcard_quiz_app/features/categories/presentation/screen/test_screen_categroy.dart';
+import 'package:flashcard_quiz_app/features/categories/presentation/screen/category.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/data/models/flash_card_model.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/presentation/cubit/flash_card_cubit.dart';
-import 'package:flashcard_quiz_app/features/flash_cards/presentation/screens/test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -32,9 +31,13 @@ class FlashCardApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (_) => sl<CategoryCubit>()..loadCategories(),
-        child: const CategoryTestScreen(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<CategoryCubit>()..loadCategories()),
+
+          BlocProvider(create: (_) => sl<FlashCardCubit>()),
+        ],
+        child: const Category(),
       ),
     );
   }

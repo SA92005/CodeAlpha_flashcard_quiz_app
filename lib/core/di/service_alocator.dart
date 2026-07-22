@@ -72,7 +72,12 @@ Future<void> init() async {
   // Use Cases category
   // =========================
   sl.registerLazySingleton(() => AddCategoryUseCase(repository: sl()));
-  sl.registerLazySingleton(() => DeleteCategoryUseCase(repository: sl()));
+  sl.registerLazySingleton(
+    () => DeleteCategoryUseCase(
+      categoryRepository: sl(),
+      flashCardRepository: sl(),
+    ),
+  );
   sl.registerLazySingleton(() => GetCategoriesUseCase(repository: sl()));
   sl.registerLazySingleton(() => UpdateCategoryUseCase(repository: sl()));
 
