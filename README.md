@@ -1,7 +1,7 @@
 # flashcard_quiz_app
 
 A new Flutter project.
-
+## statges for the 2 features
 First Stage 
     - build architecture
         - core folder
@@ -26,7 +26,7 @@ First Stage
 
 
 
-### Data
+ ### Data
 
     - add packages
         - hive
@@ -54,5 +54,58 @@ First Stage
         - register Hive Box
         - register FlashCardDataSource
         - register FlashCardRepository
-            
 
+ ### Presentation
+
+    - Create FlashCardCubit
+    - Create FlashCardStates
+        - Initial
+        - Loading
+        - Loaded
+        - Error
+
+    - Register Cubit
+
+
+ #### Categories
+
+    - Display Categories
+    - Add Category
+    - Update Category
+    - Delete Category
+
+ #### Flash Cards
+
+    - Display Flash Cards
+    - Filter Flash Cards by Category
+    - Add Flash Card
+    - Update Flash Card
+    - Delete Flash Card
+
+ #### Flash Card Details
+
+    - Display Question
+    - Show Answer
+
+ #### Reusable Widgets
+
+    - CommonContainer
+    - CommonFloatingButton
+    - FlashCardField
+    - CategoryAlert
+
+ #### UI
+
+    - Custom Theme
+    - App Colors
+    - App Text Styles
+    - App Icons
+
+ #### Navigation
+
+    - Categories Screen → Flash Cards Screen
+    - Flash Cards Screen → Flash Card Details Screen
+
+
+
+# linkedIn video:
