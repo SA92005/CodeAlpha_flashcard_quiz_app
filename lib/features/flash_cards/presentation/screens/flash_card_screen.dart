@@ -1,9 +1,9 @@
 import 'package:flashcard_quiz_app/core/theme/app_colors.dart';
 import 'package:flashcard_quiz_app/core/theme/app_icons.dart';
 import 'package:flashcard_quiz_app/core/theme/app_text_style.dart';
+import 'package:flashcard_quiz_app/core/ui/widget/alert_dialog.dart';
 import 'package:flashcard_quiz_app/core/ui/widget/common_container.dart';
 import 'package:flashcard_quiz_app/core/ui/widget/common_flating_button.dart';
-import 'package:flashcard_quiz_app/core/ui/widget/alert_dialog.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/domain/entity/flash_card_entity.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/presentation/cubit/flash_card_cubit.dart';
 import 'package:flashcard_quiz_app/features/flash_cards/presentation/cubit/flash_card_states.dart';
@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashCardScreen extends StatefulWidget {
   const FlashCardScreen({super.key, required this.categoryId});
+
   final String categoryId;
 
   @override
@@ -23,7 +24,6 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
   @override
   void initState() {
     super.initState();
-
     context.read<FlashCardCubit>().loadFlashCards();
   }
 
@@ -45,36 +45,41 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
           if (state is ErrorFlashCardState) {
             return Center(child: Text(state.message));
           }
+
           if (state is LoadedFlashCardState) {
             final flashCards = state.flashCards
                 .where((card) => card.category == widget.categoryId)
                 .toList();
 
             return Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10),
               child: ListView.builder(
                 itemCount: flashCards.length,
                 itemBuilder: (context, index) {
                   final flashCard = flashCards[index];
+
                   return CommonContainer(
                     icon: AppIcons.note,
                     text: flashCard.question,
                     onDelete: () => _onDelete(context, flashCard),
+                    onUpdate: () => _onUpdate(context, flashCard),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              FlashCardDetailsScreen(flashCard: flashCard),
+                          builder: (_) => FlashCardDetailsScreen(
+                            flashCards: flashCards,
+                            initialIndex: index,
+                          ),
                         ),
                       );
                     },
-                    onUpdate: () => _onUpdate(context, flashCard),
                   );
                 },
               ),
             );
           }
+
           return const SizedBox();
         },
       ),
@@ -87,24 +92,26 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
 
 void _addFlashCard(BuildContext context, String categoryId) {
   final cubit = context.read<FlashCardCubit>();
+
   showDialog(
     context: context,
-    builder: (context) {
+    builder: (_) {
       final controller = TextEditingController();
       final answerController = TextEditingController();
+
       return CategoryAlert(
-        hintText: "enter question",
-        secondController: answerController,
         header: "add card",
-        secondHintText: "enter answer",
+        hintText: "Enter question",
+        secondHintText: "Enter answer",
         controller: controller,
-        onAdd: (name) {
+        secondController: answerController,
+        onAdd: (question) {
           cubit.addFlashCard(
             FlashCardEntity(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
-              question: name,
+              question: question,
               answer: answerController.text.trim(),
-              category: categoryId, // Default answer
+              category: categoryId,
             ),
           );
         },
@@ -140,16 +147,19 @@ void _onDelete(BuildContext context, FlashCardEntity flashCard) {
 
 void _onUpdate(BuildContext context, FlashCardEntity flashCard) {
   final cubit = context.read<FlashCardCubit>();
+
   final controller = TextEditingController(text: flashCard.question);
+
   final answerController = TextEditingController(text: flashCard.answer);
+
   showDialog(
     context: context,
     builder: (_) => CategoryAlert(
-      secondController: answerController,
-      secondHintText: "",
-      hintText: "",
       header: "update card",
+      hintText: "",
+      secondHintText: "",
       controller: controller,
+      secondController: answerController,
       onAdd: (question) {
         cubit.updateFlashCard(
           FlashCardEntity(
